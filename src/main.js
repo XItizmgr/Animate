@@ -1,18 +1,17 @@
-const { createElement } = require("react")
 
 // import "./style.css"
 const imageSources = [
-    "/image1.jpg", "/image11.jpg", "/image2.jpg",
-    "/image7.jpg", "/image4.jpg", "/image3.jpg",
-    "/image5.jpg", "/image8.jpg", "/image9.jpg",
-    "/image4.jpg", "/image11.jpg", "/image10.jpg",
-    "/image9.jpg", "/image1.jpg", "/image3.jpg",
-    "/image7.jpg", "/image2.jpg", "/image6.jpg",
+    "/public/image1.jpg", "/public/image11.jpg", "/public/image2.jpg",
+    "/public/image7.jpg", "/public/image4.jpg", "/public/image3.jpg",
+    "/public/image5.jpg", "/public/image8.jpg", "/public/image9.jpg",
+    "/public/image4.jpg", "/public/image11.jpg", "/public/image10.jpg",
+    "/public/image9.jpg", "/public/image1.jpg", "/public/image3.jpg",
+    "/public/image7.jpg", "/public/image2.jpg", "/public/image6.jpg",
 ]
 
-const column_base = [7, 44, 74]
-const column_gap = 540
-const COL_STAGGER = [20, 160, 80]
+const column_base = [8, 42, 72]
+const column_gap = 720
+const COL_STAGGER = [0, 220, 110];
 
 
 const imagedata = imageSources.map((src, i) => {
@@ -26,7 +25,7 @@ const imagedata = imageSources.map((src, i) => {
     return {
         src,
         leftplace: column_base[colindex] + jitterX,
-        relativetop: 60 + clusterIndex + column_gap + COL_STAGGER[colindex] + jitterY,
+        relativetop: 60 + (clusterIndex * column_gap) + COL_STAGGER[colindex] + jitterY,
         width: 180 + sizeVariation,
         speed: 0.9 + speedVariation
     }
@@ -36,14 +35,15 @@ const gallery = document.getElementById("gallery")
 const imgElements = []
 if (gallery) {
     imagedata.forEach((data, i) => {
-        const img = createElement('img')
+        const img = document.createElement('img')
         img.src = data.src
         img.alt = "image....."
         img.className = 'gallery-item'
+        img.style.width = `${data.width}px`;
         gallery.appendChild(img)
         imgElements.push({
             element: img,
-            leftpotion: data.leftplace,
+            leftposition: data.leftplace,
             relativetop: data.relativetop,
             speed: data.speed
         })
@@ -51,7 +51,7 @@ if (gallery) {
 }
 
 const scroll = document.getElementById('scrollSpacer')
-if (scroll && ImageData.length > 0) {
+if (scroll && imagedata.length > 0) {
     const maxRelativetop = Math.max(...imagedata.map(d => d.relativetop))
     scroll.style.height = `${maxRelativetop + window.innerHeight + 800}px`
 }
@@ -59,13 +59,22 @@ if (scroll && ImageData.length > 0) {
 let targetscroll = window.scrollY
 let currentscroll = window.scrollY
 const ease = 0.09
-window.addEventListener('scroll',()=>{
+window.addEventListener('scroll', () => {
     targetscroll = window.scrollY
-},{passive:true} )
+}, { passive: true })
 
-function animate(){
-    currentscroll += (targetscroll -  currentscroll) + ease 
+function animate() {
+    currentscroll += (targetscroll - currentscroll) * ease
+    const screenwidth = window.innerWidth
+    const screenheight = window.innerHeight
+    imgElements.forEach((item) => {
+        const leftposition = (item.leftposition / 100) * screenwidth
+        const yposition = screenheight + item.relativetop - currentscroll * item.speed
+        item.element.style.transform = `translate3d(${leftposition}px ,${yposition}px, 1px)`
+    })
+    requestAnimationFrame(animate)
 }
+requestAnimationFrame(animate)
 
 
 

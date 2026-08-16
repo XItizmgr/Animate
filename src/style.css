@@ -113,7 +113,7 @@ main {
   overflow: visible;
 }
 .eye-pupil {
-  transition: transform -0.15s ease-out;
+  transition: transform 0.1s ease-out;
 }
 .gallery {
   position: fixed;
@@ -124,7 +124,6 @@ main {
   pointer-events: none;
   z-index: 5;
 }
-
 .gallery-item {
   position: absolute;
   top: 0;
@@ -132,7 +131,9 @@ main {
   will-change: transform;
   pointer-events: auto;
   box-shadow: 0 15px 45px rgba(0, 0, 0, 0.8);
-  transition: opacity 0.3s ease, filter 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    filter 0.3s ease;
   user-select: none;
   cursor: pointer;
 }
