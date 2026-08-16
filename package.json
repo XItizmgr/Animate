@@ -1,0 +1,26 @@
+{
+  "name": "mainanimatin",
+  "version": "1.0.0",
+  "description": "This is a simple webpage where there are 17 images and they are animated thats it ..\r I created this webpage to copy https://meinhardtaxer.com/ this animation style using only js but as u can see this is how it turn out",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XItizmgr/Animate.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/XItizmgr/Animate/issues"
+  },
+  "homepage": "https://github.com/XItizmgr/Animate#readme",
+  "devDependencies": {
+    "vite": "^8.2.1"
+  }
+}

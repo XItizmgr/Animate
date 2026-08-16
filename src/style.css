@@ -154,17 +154,28 @@ footer {
   letter-spacing: -0.1px;
   z-index: 30;
   pointer-events: none;
+  padding: 5px 20px;
 }
-footer * {
-  pointer-events: auto;
-}
-.footer-left {
+
+.footer-left a {
   font-weight: 400;
   opacity: 0.9;
+  pointer-events: auto;
+  transition:
+    opacity 0.25s ease,
+    color 0.25s ease;
+  text-decoration: none;
+  color: #c3c2c2;
 }
+.footer-left a:hover {
+  color: #ffffff;
+  opacity: 1;
+}
+
 .footer-right {
   font-family: serif;
   font-size: 14px;
+  opacity: 0.7;
 }
 @media (max-width: 860px) {
   #app {

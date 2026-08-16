@@ -1,17 +1,17 @@
 
 // import "./style.css"
 const imageSources = [
-    "/public/image1.jpg", "/public/image11.jpg", "/public/image2.jpg",
-    "/public/image5.jpg", "/public/image8.jpg", "/public/image9.jpg",
-    "/public/image15.jpg", "/public/image8.jpg", "/public/image9.jpg",
-    "/public/image14.jpg", "/public/image15.jpg", "/public/image10.jpg",
-    "/public/image7.jpg", "/public/image4.jpg", "/public/image3.jpg",
-    "/public/image12.jpg", "/public/image4.jpg", "/public/image3.jpg",
-    "/public/image17.jpg", "/public/image10.jpg", "/public/image3.jpg",
-    "/public/image12.jpg", "/public/image16.jpg", "/public/image13.jpg",
-    "/public/image8.jpg", "/public/image4.jpg", "/public/image2.jpg",
-    "/public/image16.jpg", "/public/image14.jpg", "/public/image7.jpg",
-    
+    "/image1.jpg", "/image11.jpg", "/image2.jpg",
+    "/image5.jpg", "/image8.jpg", "/image9.jpg",
+    "/image15.jpg", "/image8.jpg", "/image9.jpg",
+    "/image14.jpg", "/image15.jpg", "/image10.jpg",
+    "/image7.jpg", "/image4.jpg", "/image3.jpg",
+    "/image12.jpg", "/image4.jpg", "/image3.jpg",
+    "/image17.jpg", "/image10.jpg", "/image3.jpg",
+    "/image12.jpg", "/image16.jpg", "/image13.jpg",
+    "/image8.jpg", "/image4.jpg", "/image2.jpg",
+    "/image16.jpg", "/image14.jpg", "/image7.jpg",
+
 ]
 
 const column_base = [12, 38, 64]
@@ -83,13 +83,13 @@ window.addEventListener('scroll', () => {
 
 function animate() {
     currentScroll += (targetScroll - currentScroll) * ease
-    scrollVelocity =currentScroll - previousScroll
+    scrollVelocity = currentScroll - previousScroll
     previousScroll = currentScroll
     const screenWidth = window.innerWidth
     const screenHeight = window.innerHeight
     imgElements.forEach((item) => {
         const leftPosition = (item.leftposition / 100) * screenWidth
-        const yPosition =screenHeight + item.relativetop -currentScroll * item.speed
+        const yPosition = screenHeight + item.relativetop - currentScroll * item.speed
         const velocityRotation = scrollVelocity * 0.08
         const targetRotation = item.rotation + velocityRotation
         item.currentRotation += (targetRotation - item.currentRotation) * 0.12
