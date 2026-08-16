@@ -71,6 +71,7 @@ ul {
   display: flex;
   gap: 72px;
   list-style: none;
+  margin-right: 20px;
 }
 ul a {
   color: #e3e3e3;
