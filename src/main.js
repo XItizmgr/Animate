@@ -2,17 +2,21 @@
 // import "./style.css"
 const imageSources = [
     "/public/image1.jpg", "/public/image11.jpg", "/public/image2.jpg",
-    "/public/image7.jpg", "/public/image4.jpg", "/public/image3.jpg",
     "/public/image5.jpg", "/public/image8.jpg", "/public/image9.jpg",
-    "/public/image4.jpg", "/public/image11.jpg", "/public/image10.jpg",
-    "/public/image9.jpg", "/public/image1.jpg", "/public/image3.jpg",
-    "/public/image7.jpg", "/public/image2.jpg", "/public/image6.jpg",
+    "/public/image15.jpg", "/public/image8.jpg", "/public/image9.jpg",
+    "/public/image14.jpg", "/public/image15.jpg", "/public/image10.jpg",
+    "/public/image7.jpg", "/public/image4.jpg", "/public/image3.jpg",
+    "/public/image12.jpg", "/public/image4.jpg", "/public/image3.jpg",
+    "/public/image17.jpg", "/public/image10.jpg", "/public/image3.jpg",
+    "/public/image12.jpg", "/public/image16.jpg", "/public/image13.jpg",
+    "/public/image8.jpg", "/public/image4.jpg", "/public/image2.jpg",
+    "/public/image16.jpg", "/public/image14.jpg", "/public/image7.jpg",
+    
 ]
 
-const column_base = [8, 42, 72]
-const column_gap = 720
+const column_base = [12, 38, 64]
+const column_gap = 600
 const COL_STAGGER = [0, 220, 110];
-
 
 const imagedata = imageSources.map((src, i) => {
     const colindex = i % 3
@@ -21,13 +25,18 @@ const imagedata = imageSources.map((src, i) => {
     const jitterX = ((i * 17) % 12) - 6
     const jitterY = (i * 37) % 90
     const sizeVariation = (i * 53) % 110
-    const speedVariation = ((i * 13) % 21) / 100
+    const depth = ((i * 29) % 100) / 100
+    const speed = 0.75 + depth * 0.5
+    const scale = 0.82 + depth * 0.28
+    const opacity = 0.55 + depth * 0.45
+    const rotation = ((i * 23) % 7) - 3
     return {
         src,
         leftplace: column_base[colindex] + jitterX,
         relativetop: 60 + (clusterIndex * column_gap) + COL_STAGGER[colindex] + jitterY,
         width: 180 + sizeVariation,
-        speed: 0.9 + speedVariation
+        speed,
+        scale, opacity, rotation, depth,
     }
 })
 
@@ -40,12 +49,18 @@ if (gallery) {
         img.alt = "image....."
         img.className = 'gallery-item'
         img.style.width = `${data.width}px`;
+        img.style.opacity = data.opacity
         gallery.appendChild(img)
         imgElements.push({
             element: img,
             leftposition: data.leftplace,
             relativetop: data.relativetop,
-            speed: data.speed
+            speed: data.speed,
+            scale: data.scale,
+            opacity: data.opacity,
+            rotation: data.rotation,
+            depth: data.depth,
+            currentRotation: data.rotation
         })
     })
 }
@@ -56,21 +71,29 @@ if (scroll && imagedata.length > 0) {
     scroll.style.height = `${maxRelativetop + window.innerHeight + 800}px`
 }
 
-let targetscroll = window.scrollY
-let currentscroll = window.scrollY
+let targetScroll = window.scrollY
+let currentScroll = window.scrollY
+let previousScroll = window.scrollY
+let scrollVelocity = 0
+
 const ease = 0.09
 window.addEventListener('scroll', () => {
-    targetscroll = window.scrollY
+    targetScroll = window.scrollY
 }, { passive: true })
 
 function animate() {
-    currentscroll += (targetscroll - currentscroll) * ease
-    const screenwidth = window.innerWidth
-    const screenheight = window.innerHeight
+    currentScroll += (targetScroll - currentScroll) * ease
+    scrollVelocity =currentScroll - previousScroll
+    previousScroll = currentScroll
+    const screenWidth = window.innerWidth
+    const screenHeight = window.innerHeight
     imgElements.forEach((item) => {
-        const leftposition = (item.leftposition / 100) * screenwidth
-        const yposition = screenheight + item.relativetop - currentscroll * item.speed
-        item.element.style.transform = `translate3d(${leftposition}px ,${yposition}px, 1px)`
+        const leftPosition = (item.leftposition / 100) * screenWidth
+        const yPosition =screenHeight + item.relativetop -currentScroll * item.speed
+        const velocityRotation = scrollVelocity * 0.08
+        const targetRotation = item.rotation + velocityRotation
+        item.currentRotation += (targetRotation - item.currentRotation) * 0.12
+        item.element.style.transform = ` translate3d(${leftPosition}px,${yPosition}px,0) rotate(${item.currentRotation}deg) scale(${item.scale})`
     })
     requestAnimationFrame(animate)
 }
